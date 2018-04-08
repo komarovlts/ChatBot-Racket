@@ -5,9 +5,9 @@
         (rnrs io simple (6))
         (srfi :19)
         )
-
+;Función numeroRandom
 ;Esta función random tuma un xn y obtiene el xn+1 de la secuencia de números aleatorios.
-(define myRandom
+(define numeroRandom
      (lambda (xn)
      (define a 1103515245)
      (define c 12345)
@@ -18,17 +18,17 @@
 ;Cada vez que pedimos un random, debemos pasar como argumento el random anterior.
 ;Acá un ejemplo que permite generar una lista de números aleatorios.
 ;Parámetros:
-;* "cuantos" indica el largo de la lista a generar.
-;* "xActual" valor actual del random, se pasa en cada nivel de recursión de forma actualizada
-;* "maximo" Los números generados van desde 0 hasta maximo-1
-(define getListaRandom (lambda (cuantos xActual maximo)
-     (if (= 0 cuantos)
+;* "cantidadNumerosLista" indica el largo de la lista a generar.
+;* "numeroActual" valor actual del random, se pasa en cada nivel de recursión de forma actualizada
+;* "maximoLista" Los números generados van desde 0 hasta maximoLista-1
+(define obtenerListaRandom (lambda (cantidadNumerosLista numeroActual maximoLista)
+     (if (= 0 cantidadNumerosLista)
           ;do
           '()
      ;else
-     (let ((xNvo (myRandom xActual)))
-          (cons (remainder xNvo maximo)
-               (getListaRandom (- cuantos 1) xNvo maximo)
+     (let ((xNvo (numeroRandom numeroActual)))
+          (cons (remainder xNvo maximoLista)
+               (obtenerListaRandom (- cantidadNumerosLista 1) xNvo maximoLista)
                )
           )
      )
@@ -36,5 +36,19 @@
 )
 
 (define (seed maximoAleatorio)
-     (car (getListaRandom 3 (myRandom (date-second (current-date))) maximoAleatorio))
+     (car (obtenerListaRandom 3 (numeroRandom (date-second (current-date))) maximoAleatorio))
 )
+
+;Fecha
+(display
+(string-append (number->string (date-day (current-date))) "/"
+               (number->string (date-month (current-date))) "/"
+               (number->string (date-year (current-date))))
+               )
+(newline)
+;Hora
+(display
+(string-append (number->string (date-hour (current-date))) ":"
+               (number->string (date-minute (current-date))) ":"
+               (number->string (date-second (current-date))))
+               )
