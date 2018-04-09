@@ -1,10 +1,11 @@
 #lang r6rs
-(import (rnrs lists (6))
+(import (rnrs io simple (6))
+        (rnrs files (6))
+        (rnrs lists (6))
         (rnrs base (6))
         (rnrs r5rs (6))
-        (rnrs io simple (6))
-        (srfi :19)
-        )
+        (srfi :19))
+
 ;Función numeroRandom
 ;Esta función random tuma un xn y obtiene el xn+1 de la secuencia de números aleatorios.
 (define numeroRandom
@@ -35,8 +36,8 @@
    )
 )
 
-(define (seed maximoAleatorio)
-     (car (obtenerListaRandom 3 (numeroRandom (date-second (current-date))) maximoAleatorio))
+(define (seed segundoActual maximoAleatorio)
+     (car (obtenerListaRandom 1 segundoActual maximoAleatorio))
 )
 
 ;Fecha
