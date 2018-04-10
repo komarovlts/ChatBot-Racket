@@ -40,16 +40,67 @@
      (car (obtenerListaRandom 1 segundoActual maximoAleatorio))
 )
 
+(define (mostrarHora&Fecha Null)
 ;Fecha
 (display
 (string-append (number->string (date-day (current-date))) "/"
                (number->string (date-month (current-date))) "/"
                (number->string (date-year (current-date))))
                )
-(newline)
+(display "  ")
 ;Hora
 (display
 (string-append (number->string (date-hour (current-date))) ":"
                (number->string (date-minute (current-date))) ":"
                (number->string (date-second (current-date))))
                )
+(display "  ")
+)
+
+(define chatBot 0)
+(define log 0)
+;(define seed 0)
+;(define (sendMassage chatBot log seed nombre edad)
+     ;(display (string-append "Hola " nombre ", ¿Cómo estás?"))
+     ;(display (string-append "así que tienes" (number->string edad)", aún eres ilegal."))
+     ;)
+
+(define (begingDialog chatBot log seed)
+     (cond
+          ((and (> (date-hour (current-date)) 6) (< (date-hour (current-date)) 12))
+          ;do
+          (and (mostrarHora&Fecha 0) (display "Hola, Buenos Días, ¿Cómo te llamas?")))
+          ((and (>= (date-hour (current-date)) 12) (< (date-hour (current-date)) 20))
+          ;do
+          (and (mostrarHora&Fecha 0) (display "Hola, Buenas Tardes, ¿Cómo te llamas?")))
+          ((and (>= (date-hour (current-date)) 20) (< (date-hour (current-date)) 0))
+          ;do
+          (and (mostrarHora&Fecha 0) (display "Hola, buenos días, ¿Cómo te llamas?")))
+          (else (display "Hola, ¿Cómo te llamas?"))
+          )
+     )
+
+(define (endDialog chatBot log seed)
+(cond
+     ((and (> (date-hour (current-date)) 6) (< (date-hour (current-date)) 12))
+     ;do
+     (and (mostrarHora&Fecha 0) (display "Espero haberte sido de utilidad, que tengas un buen día,¡Adiós!")))
+     ((and (>= (date-hour (current-date)) 12) (< (date-hour (current-date)) 20))
+     ;do
+     (and (mostrarHora&Fecha 0) (display "Espero haberte sido de utilidad, que tengas una buena tarde,¡Adiós!")))
+     ((and (>= (date-hour (current-date)) 20) (< (date-hour (current-date)) 0))
+     ;do
+     (and (mostrarHora&Fecha 0) (display "Espero haberte sido de utilidad, que tengas un buena noche,¡Adiós!")))
+     (else (display "Espero haberte sido de utilidad, ¡Hasta luego!"))
+     )
+)
+
+(define f 0)
+(define (rate chatbot score f log)
+     
+
+)
+
+;LLamadas:
+;begingDialog: (begingDialog chatBot log (seed (date-second (current-date)) 3))
+;endDialog: (endDialog chatBot log (seed (date-second (current-date)) 3))

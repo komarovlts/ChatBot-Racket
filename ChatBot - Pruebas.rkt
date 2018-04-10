@@ -29,6 +29,7 @@
 ;(display (concatena '("hola") '(0 2 1)))
 ;(display (find even? '(3 1 4 1 5 9)))
 
+
 ;(let ((date (make-date (current-time))))
 ;(display (date-month date)))
 ;(display (date? (current-date)))
