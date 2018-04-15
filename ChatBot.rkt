@@ -36,16 +36,57 @@
    )
 )
 
-(define (seed segundoActual maximoAleatorio)
-     (car (obtenerListaRandom 1 segundoActual maximoAleatorio))
+(define (seed segundoActual)
+     (car (obtenerListaRandom 1 segundoActual 3))
 )
 
 (define (unirListas lista1 lista2)
      (cond
           ((null? lista1) lista2)
           ((null? lista2) lista1)
-          (else (cons (car lista1) (cons (car lista2) (merge (cdr lista1) (cdr lista2)))))
+          (else (cons (car lista1) (cons (car lista2) (unirListas (cdr lista1) (cdr lista2)))))
           )
+)
+
+(define (obtenerElemento posicionObjetivo lista)
+     (cond
+          ((or (< posicionObjetivo 0) (> posicionObjetivo (length lista))))
+          ((> posicionObjetivo 0) (obtenerElemento (- posicionObjetivo 1) (cdr lista)))
+          (else (car lista))
+          )
+)
+
+(define (separarEvaluaciones largoLista listaChatbot nuevaLista)
+     (if (and (> largoLista 0)(< largoLista (length listaChatbot)))
+          ;do
+          (and (cons (obtenerElemento largoLista listaChatbot) nuevaLista ) (separarEvaluaciones (+ largoLista 1) listaChatbot nuevaLista))
+     ;else
+     nuevaLista
+     )
+)
+
+;LLamada: (separarEvaluaciones (- (length '(8 4 2 3 5)) 1) '(8 4 2 3 5) '())
+
+;Chatbot.
+;Dominio:
+;    personalidad: Se ingresa un string que determina la personalidad que tenga el chatbot.
+;    vocabulario: Se ingresa un string que determina el tipo de vocabulario que tenga el chatbot.
+;    evaluaciones: Se ingresa una lista con las evaluaciones anteriores.
+;Tipo 1: Coloquial de vocabulario Alto.
+;Tipo 2: Coloquial de vocabulario Pobre.
+;Tipo 3: Formal de vocabulario Alto.
+;Tipo 4: Formal de vocabulario Pobre.
+;Se devulve una lista en donde el primer elemento de esta es el tipo
+;de chatbot, el resto equivalen a las evaluaciones que tenga el chatbot.
+(define (chatBot personalidad vocabulario #|evaluaciones|#)
+     (cond
+          ((and (eqv? personalidad "coloquial" ) (eqv? vocabulario "alto")) 1)
+          ((and (eqv? personalidad "coloquial" ) (eqv? vocabulario "pobre")) 2)
+          ((and (eqv? personalidad "formal" ) (eqv? vocabulario "alto")) 3)
+          ((and (eqv? personalidad "formal" ) (eqv? vocabulario "pobre")) 4)
+          )
+
+
 )
 
 ;(define (log logAnterior)
@@ -69,7 +110,7 @@
 (display "  ")
 )
 
-(define chatBot 0)
+
 (define log 0)
 ;(define seed 0)
 ;(define (sendMassage chatBot log seed nombre edad)

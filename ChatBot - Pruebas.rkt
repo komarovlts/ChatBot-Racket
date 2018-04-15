@@ -47,13 +47,40 @@
 ;(display (string-append (number->string (date-day (current-date))) "/" (number->string (date-month (current-date))) "/" (number->string (date-year (current-date)))))
 
 ;(newline)
-#|(define chat 0)
+#|
+(define chat 0)
 (define log 0)
 (define seed 0)
 (define (sendMassage chat log seed nombre edad)
   (display (string-append "Hola " nombre ", ¿Cómo estás?"))
   (display (string-append "así que tienes" (number->string edad)", aún eres ilegal."))
-  )|#
+  )
+|#
 
-(display (find even? ’(3 1 4 1 5 9)))
+;(display (find even? '(3 1 4 1 5 9)))
 ;(sendMassage chat log seed Omar 17)
+
+#|
+(define (unirListas lista1 lista2)
+     (cond
+          ((null? lista1) lista2)
+          ((null? lista2) lista1)
+          (else (cons (car lista1) (cons (car lista2) (unirListas (cdr lista1) (cdr lista2)))))
+          )
+)
+|#
+
+(define (obtenerElemento posicionObjetivo lista)
+     (cond
+          ((or (< posicionObjetivo 0) (> posicionObjetivo (length lista))))
+          ((> posicionObjetivo 0) (obtenerElemento (- posicionObjetivo 1) (cdr lista)))
+          (else (car lista))
+          )
+)
+
+(define (separarEvaluaciones  listaChatbot nuevaLista)
+     (append nuevaLista (map (first listaChatbot) (cdr listaChatbot)))
+     nuevaLista
+)
+
+;#| |#   ---> comentarios
