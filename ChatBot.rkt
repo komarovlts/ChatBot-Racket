@@ -40,6 +40,18 @@
      (car (obtenerListaRandom 1 segundoActual maximoAleatorio))
 )
 
+(define (unirListas lista1 lista2)
+     (cond
+          ((null? lista1) lista2)
+          ((null? lista2) lista1)
+          (else (cons (car lista1) (cons (car lista2) (merge (cdr lista1) (cdr lista2)))))
+          )
+)
+
+;(define (log logAnterior)
+
+;)
+
 (define (mostrarHora&Fecha Null)
 ;Fecha
 (display
@@ -95,11 +107,9 @@
      )
 )
 
-(define f 0)
-(define (rate chatbot score f log)
-     
-
-)
+;(define f 0)
+;(define (rate chatbot score f log)
+;)
 
 ;LLamadas:
 ;begingDialog: (begingDialog chatBot log (seed (date-second (current-date)) 3))

@@ -47,12 +47,13 @@
 ;(display (string-append (number->string (date-day (current-date))) "/" (number->string (date-month (current-date))) "/" (number->string (date-year (current-date)))))
 
 ;(newline)
-(define chat 0)
+#|(define chat 0)
 (define log 0)
 (define seed 0)
 (define (sendMassage chat log seed nombre edad)
   (display (string-append "Hola " nombre ", ¿Cómo estás?"))
   (display (string-append "así que tienes" (number->string edad)", aún eres ilegal."))
-  )
+  )|#
 
+(display (find even? ’(3 1 4 1 5 9)))
 ;(sendMassage chat log seed Omar 17)
