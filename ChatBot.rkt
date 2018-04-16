@@ -22,23 +22,26 @@
 ;* "cantidadNumerosLista" indica el largo de la lista a generar.
 ;* "numeroActual" valor actual del random, se pasa en cada nivel de recursión de forma actualizada
 ;* "maximoLista" Los números generados van desde 0 hasta maximoLista-1
-(define obtenerListaRandom (lambda (cantidadNumerosLista numeroActual maximoLista)
-     (if (= 0 cantidadNumerosLista)
-          ;do
-          '()
-     ;else
-     (let ((xNvo (numeroRandom numeroActual)))
-          (cons (remainder xNvo maximoLista)
-               (obtenerListaRandom (- cantidadNumerosLista 1) xNvo maximoLista)
+(define obtenerListaRandom
+     (lambda (cantidadNumerosLista numeroActual maximoLista)
+          (if (= 0 cantidadNumerosLista)
+               ;do
+               '()
+          ;else
+          (let ((xNvo (numeroRandom numeroActual)))
+               (cons (remainder xNvo maximoLista)
+                    (obtenerListaRandom (- cantidadNumerosLista 1) xNvo maximoLista)
+                    )
                )
           )
      )
-   )
 )
 
 (define (seed valor)
      (car (obtenerListaRandom 1 valor 3))
 )
+
+;(seed (date-second (current-date))) = pseudoaleatoreo.
 ;(seed 1) = 0
 ;(seed 2) = 1
 ;(seed 4) = 2
@@ -181,17 +184,6 @@
 ;(define f 0)
 ;(define (rate chatbot score f log)
 ;)
-
-;LLamadas:
-;begingDialog: (begingDialog chatBot log (seed (date-second (current-date)) 3))
-;endDialog: (endDialog chatBot log (seed (date-second (current-date)) 3))
-
-
-
-
-
-
-
 
 #|
 (define log1 (sendMessage "Hola" chatbot log))
