@@ -14,7 +14,7 @@
 ;(newline)
 ;(display (current-time))
 
-(lax-date? (make-date 0 19 10 10 14 "bogus" "bogus" 0))
+#|(lax-date? (make-date 0 19 10 10 14 "bogus" "bogus" 0))
 
 (lax-date? (string->date "10:21:00" "~H:~M:~S"))
 
@@ -26,6 +26,7 @@
      (cons (car Lista1) (concatena (cdr Lista1) Lista2))
      )
 )
+|#
 ;(display (concatena '("hola") '(0 2 1)))
 ;(display (find even? '(3 1 4 1 5 9)))
 
@@ -78,9 +79,17 @@
           )
 )
 
-(define (separarEvaluaciones  listaChatbot nuevaLista)
-     (append nuevaLista (map (first listaChatbot) (cdr listaChatbot)))
-     nuevaLista
+(define (separarEvaluaciones  listaChatbot)
+     (define listaEvaluacion (cdr listaChatbot))
+     listaEvaluacion
 )
+
+(define (adquirirPersonalidad listaChatbot)
+  (define personalidadChatbot (car listaChatbot))
+     personalidadChatbot
+)
+
+;(list 1 4 3 5 7 1)
+;'(4 3 5 7 1)
 
 ;#| |#   ---> comentarios
