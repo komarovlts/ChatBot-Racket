@@ -66,8 +66,6 @@
 ;LLamadas: (separarEvaluaciones (list 1 4 3 5 7 1))
 ;         (adquirirPersonalidad (list 1 4 3 5 7 1))
 
-
-
 ;Chatbot.
 ;Dominio:
 ;    personalidad: Se ingresa un string que determina la personalidad que tenga el chatbot.
@@ -152,6 +150,12 @@
      (display log)
 )
 
+;Se realiza la venta de homocinéticas de los siguientes vehículos:
+;    Toyota Rav4
+;    Renault Duster
+;    Hyundai Tucson
+;    Nissan Qashqai
+;    Nissan Kicks
 (define (sendMessage chatBot log seed)
      (+ 2 2)
 )
