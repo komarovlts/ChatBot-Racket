@@ -16,7 +16,7 @@
           (remainder (+ (* a xn) c) m)
      )
 )
-;Cada vez que pedimos un random, debemos pasar como argumento el random anterior.
+;Cada vez que se pide un random, debemos pasar como argumento el random anterior.
 ;Acá un ejemplo que permite generar una lista de números aleatorios.
 ;Parámetros:
 ;* "cantidadNumerosLista" indica el largo de la lista a generar.
@@ -36,6 +36,10 @@
           )
      )
 )
+
+;Código de numeroRandom y obtenerListaRandom se han obtenido desde:
+;http://www.udesantiagovirtual.cl/moodle2/pluginfile.php?file=%2F93558%2
+;Fmod_folder%2Fcontent%2F0%2Fvflores%2FrandomScheme.rkt&forcedownload=1
 
 (define (seed valor)
      (car (obtenerListaRandom 1 valor 3))

@@ -71,6 +71,7 @@
 )
 |#
 
+#|
 (define (obtenerElemento posicionObjetivo lista)
      (cond
           ((or (< posicionObjetivo 0) (> posicionObjetivo (length lista))))
@@ -88,7 +89,7 @@
   (define personalidadChatbot (car listaChatbot))
      personalidadChatbot
 )
-
+|#
 ;(list 1 4 3 5 7 1)
 ;'(4 3 5 7 1)
 
