@@ -155,7 +155,7 @@
 )
 
 (define (begingDialog chatBot log seed)
-     (if (= (adquirirPersonalidad chatBot) 1)
+     (if (= (adquirirPersonalidad chatBot) 1) ;Personalidad: Formal.
           ;do
           (cond
                ((and (> (date-hour (current-date)) 6) (< (date-hour (current-date)) 12) ())
@@ -172,7 +172,7 @@
                )
                (else (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Buenas, ¿Cómo te llamas?")))
                )
-          ;else
+          ;else Personalidad: Informal.
           (cond
                ((= seed 0) (append log (Hora&Fecha current-date '()) (list "Chatbot: " "¡Hola!, Cómo te llamai?")))
                ((= seed 1) (append log (Hora&Fecha current-date '()) (list "Chatbot: " "¡Buena!, Cómo te llamas?")))
