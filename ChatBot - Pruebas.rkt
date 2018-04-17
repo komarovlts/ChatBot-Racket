@@ -89,7 +89,60 @@
   (define personalidadChatbot (car listaChatbot))
      personalidadChatbot
 )
+
+(define (log? log)
+     (if (list? log)
+          ;do
+          (if (> (length log) 0)
+               ;do
+               (if (null? (filter (lambda (x) (not(string? x))) log))
+                    ;do
+                    #t
+               ;else
+               #f
+               )
+          ;else
+          #t
+          )
+     ;else
+     #f
+     )
+)
 |#
+
+(define (adquirirPersonalidad listaChatbot)
+     (define personalidadChatbot '())
+     (if (not (= (length listaChatbot) 0))
+          ;do
+          (append personalidadChatbot (car listaChatbot))
+     ;else
+     listaChatbot
+     )
+)
+
+(define (chatBot? chatBot)
+     (if (list? chatBot)
+          ;do
+          (if (> (length chatBot) 0)
+               ;do
+               (if (null? (filter (lambda (x) (not(number? x))) chatBot))
+                    ;do
+                    (if (or (= (adquirirPersonalidad chatBot) 1) (= (adquirirPersonalidad chatBot) 0))
+                         ;do
+                         #t
+                    ;else
+                    #f
+                    )
+               ;else
+               #f
+               )
+          ;else
+          #t
+          )
+     ;else
+     #f
+     )
+)
 ;(list 1 4 3 5 7 1)
 ;'(4 3 5 7 1)
 

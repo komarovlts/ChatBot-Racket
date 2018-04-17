@@ -56,11 +56,16 @@
 (define (log? log)
      (if (list? log)
           ;do
-          (if (or (= (length log) 0) (string?(car log)))
+          (if (> (length log) 0)
                ;do
-               #t
+               (if (null? (filter (lambda (x) (not(string? x))) log))
+                    ;do
+                    #t
+               ;else
+               #f
+               )
           ;else
-          #f
+          #t
           )
      ;else
      #f
@@ -94,13 +99,29 @@
 
 ;FUNCION DE PERTENENCIA
 (define (chatBot? chatBot)
-     (if (and (list? chatBot) (and (or (> (adquirirPersonalidad chatBot) 0) (= (adquirirPersonalidad chatBot) 0)) (< (adquirirPersonalidad chatBot) 2)))
+     (if (list? chatBot)
           ;do
+          (if (> (length chatBot) 0)
+               ;do
+               (if (null? (filter (lambda (x) (not(number? x))) chatBot))
+                    ;do
+                    (if (or (= (adquirirPersonalidad chatBot) 1) (= (adquirirPersonalidad chatBot) 0))
+                         ;do
+                         #t
+                    ;else
+                    #f
+                    )
+               ;else
+               #f
+               )
+          ;else
           #t
+          )
      ;else
      #f
-          )
      )
+)
+
 ;Llamada: (chatBot? '(2 3 4 5))
 
 ;SELECTORES
@@ -121,8 +142,8 @@
           (append personalidadChatbot (car listaChatbot))
      ;else
      listaChatbot
-          )
      )
+)
 
 (define (Hora&Fecha momentoActual listaHora&Fecha)
      (append listaHora&Fecha
@@ -150,9 +171,42 @@
           )
 )
 
+(define (adquirirUltimo log)
+     (+ 2 2)
+)
+
 (define (displayLog log)
      (display log)
 )
+
+
+(define (begingDialog chatBot log seed)
+     (if (= (adquirirPersonalidad chatBot) 1) ;Personalidad: Formal.
+          ;do
+          (cond
+               ((and (> (date-hour (current-date)) 6) (< (date-hour (current-date)) 12) ())
+               ;do
+               (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenos Días, ¿Cúal es tu nombre?" "|Nombre|"))
+               )
+               ((and (>= (date-hour (current-date)) 12) (< (date-hour (current-date)) 20))
+               ;do
+               (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas Tardes, ¿Cúal es tu nombre?" "|Nombre|"))
+               )
+               ((>= (date-hour (current-date)) 20)
+               ;do
+               (append log  (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas Noches, ¿Cúal es tu nombre?" "|Nombre|"))
+               )
+               (else (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas, ¿Cómo te llamas?" "|Nombre|")))
+               )
+          ;else Personalidad: Informal.
+          (cond
+               ((= seed 0) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Hola!, Cómo te llamai?" "|Nombre|")))
+               ((= seed 1) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Buena!, Cómo te llamas?" "|Nombre|")))
+               ((= seed 2) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Hola compa!, Cómo te llamai?" "|Nombre|")))
+               )
+          )
+     )
+;Llamada: (define log1 (begingDialog cb1 log (seed 1)))
 
 ;Se realiza la venta de homocinéticas de los siguientes vehículos:
 ;    Toyota Rav4
@@ -161,38 +215,11 @@
 ;    Nissan Qashqai
 ;    Nissan Kicks
 (define (sendMessage msg chatBot log seed)
-
      (append log (list msg) (Hora&Fecha current-date '()) (list "Usuario:" msg "Chatbot:" "Bienvenido " msg ", estos son las marcas/modelos de los autos de las homocinéticas que disponemos : 1.-Toyota Rav4, 2.-Renault Duster, 3.-Hyundai Tucson, 4.-Nissan Qashqai, 5.-Nissan Kicks, elija una opción y la cantidad de homocinéticas que desea"))
 )
 ;Llamada: (sendMessage msg cb1 log (seed 1))
 
-(define (begingDialog chatBot log seed)
-     (if (= (adquirirPersonalidad chatBot) 1) ;Personalidad: Formal.
-          ;do
-          (cond
-               ((and (> (date-hour (current-date)) 6) (< (date-hour (current-date)) 12) ())
-               ;do
-               (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenos Días, ¿Cúal es tu nombre?" "Nombre:"))
-               )
-               ((and (>= (date-hour (current-date)) 12) (< (date-hour (current-date)) 20))
-               ;do
-               (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas Tardes, ¿Cúal es tu nombre?" "Nombre:"))
-               )
-               ((>= (date-hour (current-date)) 20)
-               ;do
-               (append log  (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas Noches, ¿Cúal es tu nombre?" "Nombre:"))
-               )
-               (else (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas, ¿Cómo te llamas?" "Nombre:")))
-               )
-          ;else Personalidad: Informal.
-          (cond
-               ((= seed 0) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Hola!, Cómo te llamai?" "Nombre:")))
-               ((= seed 1) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Buena!, Cómo te llamas?" "Nombre:")))
-               ((= seed 2) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Hola compa!, Cómo te llamai?" "Nombre:")))
-               )
-          )
-     )
-;Llamada: (define log1 (begingDialog cb1 log (seed 1)))
+
 
 (define (endDialog chatBot log seed)
      (if (= (adquirirPersonalidad chatBot) 1)
@@ -239,7 +266,7 @@
 ;Llamada: (buscadorRepeticiones log "" 0)
 
 (define (adquirirNombre log)
-     (car (cdr (member "Nombre:" log)))
+     (car (cdr (member "|Nombre|" log)))
 )
 ;Llamada: (adquirirNombre log)
 
