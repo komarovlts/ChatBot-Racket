@@ -44,18 +44,27 @@
 (define (seed valor)
      (car (obtenerListaRandom 1 valor 3))
 )
-
 ;(seed (date-second (current-date))) = pseudoaleatoreo.
 ;(seed 1) = 0
 ;(seed 2) = 1
 ;(seed 4) = 2
 
-(define (obtenerElemento posicionObjetivo lista)
-     (cond
-          ((or (< posicionObjetivo 0) (> posicionObjetivo (length lista))))
-          ((> posicionObjetivo 0) (obtenerElemento (- posicionObjetivo 1) (cdr lista)))
-          (else (car lista))
+;CONSTRUCTOR
+(define log '() )
+
+;FUNCION DE PERTENENCIA
+(define (log? log)
+     (if (list? log)
+          ;do
+          (if (or (= (length log) 0) (string?(car log)))
+               ;do
+               #t
+          ;else
+          #f
           )
+     ;else
+     #f
+     )
 )
 
 ;LLamadas: (separarEvaluaciones (list 1 4 3 5 7 1))
@@ -81,7 +90,7 @@
           ((eqv? personalidad "formal" ) (append listaChatbot '(1) (separarEvaluaciones anteriorListaChatbot)))
           )
 )
-;Llamada: (chatBot "coloquial" '(2 3 4 5))
+;Llamada: (chatBot "informal" '())
 
 ;FUNCION DE PERTENENCIA
 (define (chatBot? chatBot)
@@ -131,63 +140,108 @@
                )
           )
      )
-
 ;Llamada: (Hora&Fecha current-date '())
 
+(define (obtenerElemento posicionObjetivo lista)
+     (cond
+          ((or (< posicionObjetivo 0) (> posicionObjetivo (length lista))))
+          ((> posicionObjetivo 0) (obtenerElemento (- posicionObjetivo 1) (cdr lista)))
+          (else (car lista))
+          )
+)
 
-;(define seed 0)
-;(define (sendMessage chatBot log seed nombre edad)
-     ;(display (string-append "Hola " nombre ", ¿Cómo estás?"))
-     ;(display (string-append "así que tienes" (number->string edad)", aún eres ilegal."))
-     ;)
+(define (displayLog log)
+     (display log)
+)
+
+;Se realiza la venta de homocinéticas de los siguientes vehículos:
+;    Toyota Rav4
+;    Renault Duster
+;    Hyundai Tucson
+;    Nissan Qashqai
+;    Nissan Kicks
+(define (sendMessage msg chatBot log seed)
+
+     (append log (list msg) (Hora&Fecha current-date '()) (list "Usuario:" msg "Chatbot:" "Bienvenido " msg ", estos son las marcas/modelos de los autos de las homocinéticas que disponemos : 1.-Toyota Rav4, 2.-Renault Duster, 3.-Hyundai Tucson, 4.-Nissan Qashqai, 5.-Nissan Kicks, elija una opción y la cantidad de homocinéticas que desea"))
+)
+;Llamada: (sendMessage msg cb1 log (seed 1))
 
 (define (begingDialog chatBot log seed)
-     (if (= (adquirirPersonalidad chatBot) 1)
+     (if (= (adquirirPersonalidad chatBot) 1) ;Personalidad: Formal.
           ;do
           (cond
                ((and (> (date-hour (current-date)) 6) (< (date-hour (current-date)) 12) ())
                ;do
-               (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Hola, Buenos Días, ¿Cúal es tu nombre?"))
+               (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenos Días, ¿Cúal es tu nombre?" "Nombre:"))
                )
                ((and (>= (date-hour (current-date)) 12) (< (date-hour (current-date)) 20))
                ;do
-               (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Hola, Buenas Tardes, ¿Cúal es tu nombre?"))
+               (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas Tardes, ¿Cúal es tu nombre?" "Nombre:"))
                )
                ((>= (date-hour (current-date)) 20)
                ;do
-               (append log  (Hora&Fecha current-date '()) (list "Chatbot: " "Hola, Buenas Noches, ¿Cúal es tu nombre?"))
+               (append log  (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas Noches, ¿Cúal es tu nombre?" "Nombre:"))
                )
-               (else (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Hola, Buenas, ¿Cómo te llamas?")))
+               (else (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas, ¿Cómo te llamas?" "Nombre:")))
                )
-          ;else
+          ;else Personalidad: Informal.
           (cond
-               ((= seed 0) (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Hola!, Cómo te llamai?")))
-               ((= seed 1) (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Buena!, Cómo te llamas?")))
-               ((= seed 2) (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Hola compa!, Cómo te llamai?")))
+               ((= seed 0) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Hola!, Cómo te llamai?" "Nombre:")))
+               ((= seed 1) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Buena!, Cómo te llamas?" "Nombre:")))
+               ((= seed 2) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Hola compa!, Cómo te llamai?" "Nombre:")))
                )
           )
      )
-;Llamada: (define log (begingDialog (chatBot "informal" '()) '() (seed 1)))
-;         (define log (begingDialog (chatBot "formal" '()) '() (seed 1)))
+;Llamada: (define log1 (begingDialog cb1 log (seed 1)))
 
 (define (endDialog chatBot log seed)
-(cond
-     ((and (> (date-hour (current-date)) 6) (< (date-hour (current-date)) 12))
-     ;do
-     (and (Hora&Fecha 0) (display "Espero haberte sido de utilidad, que tengas un buen día,¡Adiós!")))
-     ((and (>= (date-hour (current-date)) 12) (< (date-hour (current-date)) 20))
-     ;do
-     (and (Hora&Fecha 0) (display "Espero haberte sido de utilidad, que tengas una buena tarde,¡Adiós!")))
-     ((and (>= (date-hour (current-date)) 20) (< (date-hour (current-date)) 0))
-     ;do
-     (and (Hora&Fecha 0) (display "Espero haberte sido de utilidad, que tengas un buena noche,¡Adiós!")))
-     (else (display "Espero haberte sido de utilidad, ¡Hasta luego!"))
-     )
+     (if (= (adquirirPersonalidad chatBot) 1)
+          ;do
+          (cond
+               ((and (> (date-hour (current-date)) 6) (< (date-hour (current-date)) 12))
+               ;do
+               (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Espero haberte sido de utilidad, que tengas un buen día" (adquirirNombre log)",¡Adiós!. ¡No olvides puntuar la aplicación!"))
+               )
+               ((and (>= (date-hour (current-date)) 12) (< (date-hour (current-date)) 20))
+               ;do
+               (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Espero haberte sido de utilidad, que tengas una buena tarde" (adquirirNombre log)",¡Adiós!. ¡No olvides puntuar la aplicación!"))
+               )
+               ((>= (date-hour (current-date)) 20)
+               ;do
+               (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Espero haberte sido de utilidad, que tengas un buena noche "(adquirirNombre log)",¡Adiós!. ¡No olvides puntuar la aplicación!"))
+               )
+               (else (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Espero haberte sido de utilidad " (adquirirNombre log)", ¡Hasta luego!. ¡No olvides puntuar la aplicación!"))
+                     )
+               )
+          ;else
+          (cond
+               ((= seed 0) (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Chao" (adquirirNombre log)", ¡Nos vimoh!. ¡Acuérdate de puntuar la aplicación!")))
+               ((= seed 1) (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Espero haberte servido" (adquirirNombre log)", ¡Adiós!. ¡Acuérdate de puntuar la aplicación!")))
+               ((= seed 2) (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Dale compa, ¡Nos vemos" (adquirirNombre log)"!. ¡Acuérdate de puntuar la aplicación!")))
+               )
+          )
 )
+;Llamada: (define log1 (endDialog cb1 log (seed 1)))
 
-;(define f 0)
+
+
 ;(define (rate chatbot score f log)
 ;)
+
+(define (buscadorRepeticiones log palabraObjetivo numeroCreciente)
+     (if (not (= (member palabraObjetivo log) 0))
+          ;do
+          (buscadorRepeticiones (cdr (member palabraObjetivo log)) palabraObjetivo (+ numeroCreciente 1))
+     ;else
+     numeroCreciente
+     )
+)
+;Llamada: (buscadorRepeticiones log "" 0)
+
+(define (adquirirNombre log)
+     (car (cdr (member "Nombre:" log)))
+)
+;Llamada: (adquirirNombre log)
 
 #|
 (define log1 (sendMessage "Hola" chatbot log))
@@ -219,4 +273,19 @@ log1 = pollo perfecto su orden de pollo esta lista.
                perfecto su orden de pollo esta lista.
                log1 = pollo + perfecto su orden de pollo esta lista.
 )
+|#
+
+
+#|
+LLamada general:
+     (define cb1 (chatBot "informal" '()))
+
+     (define log1 (begingDialog cb1 log (seed 1)))
+
+     (define log2 (sendMessage "Omar Carrasco" cb1 log1 (seed 1)))
+
+     (define log3 (endDialog cb1 log2 (seed 1)))
+
+     (displayLog log3)
+
 |#
