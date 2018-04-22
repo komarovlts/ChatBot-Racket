@@ -285,6 +285,7 @@
           (else 0)
           )
 )
+;Llamada: (f log)
 
 (define (rate chatbot score f log)
      (if (eqv? (adquirirUltimo log) "|Fin conversación|")
