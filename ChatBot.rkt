@@ -42,12 +42,11 @@
 ;Fmod_folder%2Fcontent%2F0%2Fvflores%2FrandomScheme.rkt&forcedownload=1
 
 (define (seed valor)
-     (car (obtenerListaRandom 1 valor 3))
+     (car (obtenerListaRandom 1 valor 2))
 )
 ;(seed (date-second (current-date))) = pseudoaleatoreo.
 ;(seed 1) = 0
 ;(seed 2) = 1
-;(seed 4) = 2
 
 ;CONSTRUCTOR
 (define log '() )
@@ -208,7 +207,6 @@
           (cond
                ((= seed 0) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Hola!, Cómo te llamai?" "|Nombre|")))
                ((= seed 1) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Buena!, Cómo te llamas?" "|Nombre|")))
-               ((= seed 2) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Hola compa!, Cómo te llamai?" "|Nombre|")))
                )
           )
      )
@@ -222,28 +220,97 @@
 ;    Nissan Kicks
 (define (sendMessage msg chatBot log seed)
      (cond
+          ((eqv? msg "¿Qué pasó con el stock?")
+               (and (respuesta3 log) (append log (list "|Respuesta4|")))
+               )
           ((eqv? (adquirirUltimo log) "|Nombre|")
                (if (= (adquirirPersonalidad chatBot) 1) ;Personalidad: Formal.
                     ;do
                     (cond
-                         ((= seed 0) (append log (list msg) (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Cómo estás?" "|Respuesta1|")))
-                         ((= seed 1) (append log (list msg) (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Qué tal estás?" "|Respuesta1|")))
-                         ((= seed 2) (append log (list msg) (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Bienvenido " msg "¿Cómo estás?" "|Respuesta1|")))
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Cómo estás?" "|Respuesta1|")))
+                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Qué tal estás?" "|Respuesta1|")))
                          )
                     ;else Personalidad: Informal.
                     (cond
-                         ((= seed 0) (append log (list msg) (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Cómo estay?" "|Respuesta1|")))
-                         ((= seed 1) (append log (list msg) (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Buena po" msg "! ¿Cómo estai?" "|Respuesta1|")))
-                         ((= seed 2) (append log (list msg) (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Cómo estai" msg "?" "|Respuesta1|")))
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Cómo estay?" "|Respuesta1|")))
+                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Cómo estai" msg "?" "|Respuesta1|")))
                          )
                     )
                )
+          ((eqv? (adquirirUltimo log) "|Respuesta1|")
+               (and (respuesta1 msg log seed) (append log (list "Estos son las marcas/modelos de autos de las homocinéticas que disponemos: 1.-Toyota Rav4, 2.-Renault Duster, 3.-Hyundai Tucson, 4.-Nissan Qashqai, 5.-Nissan Kicks, elija la opción que desea." "|Respuesta2|")))
+               )
+          ((eqv? (adquirirUltimo log) "|Respuesta2|")
+               (and (respuesta2 msg log) (append log (list "Perfecto, ¿Cuántas querrá?" "|Respuesta3|")))
+               )
+          ((eqv? (adquirirUltimo log) "|Respuesta3|")
+               (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Excelente, déjeme verificar el stock, luego le confirmo." "¿Desea comprar algo más?" "|Respuesta4|"))
+               )
+          ((eqv? (adquirirUltimo log) "|Respuesta4|")
+               (and (respuesta4 msg log) (append log (list "Perfecto, ¿Cuántas querrá?" "|Respuesta3|")))
+               )
           )
-     (append log (list msg) (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Bienvenido " msg ", estos son las marcas/modelos de los autos de las homocinéticas que disponemos : 1.-Toyota Rav4, 2.-Renault Duster, 3.-Hyundai Tucson, 4.-Nissan Qashqai, 5.-Nissan Kicks, elija una opción y la cantidad de homocinéticas que desea"))
 )
 ;Llamada: (sendMessage msg cb1 log (seed 1))
 
+(define (respuesta1 msg log seed)
+     (cond
+          ((eqv? msg "bien")
+               (if (= (adquirirPersonalidad chatBot) 1) ;Personalidad: Formal.
+                    ;do
+                    (cond
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Oh ¡Perfecto!")))
+                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Que bien!")))
+                         )
+                    ;else Personalidad: Informal.
+                    (cond
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Buena!" )))
+                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Buena po!")))
+                         )
+                    )
+               )
+          ((eqv? msg "mal")
+               (if (= (adquirirPersonalidad chatBot) 1) ;Personalidad: Formal.
+                    ;do
+                    (cond
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Oh ¡Que mal, espero poder ayudarte!")))
+                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Espero poder subirte el ánimo cuando lleves lo que buscabas.")))
+                         )
+                    ;else Personalidad: Informal.
+                    (cond
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Oh que mala!" )))
+                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡de perro!")))
+                         )
+                    )
+               )
+          (else (append log  (list "Usuario:" msg ) (list "Chatbot:" "Lo lamento, no logro entenderte, ¿Podrías repetirlo?" "|Respuesta1|")))
+     )
+)
 
+(define (respuesta2 msg log)
+     (cond
+          ((eqv? msg "1") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Tomo nota...")))
+          ((eqv? msg "2") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Tomo nota...")))
+          ((eqv? msg "3") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Tomo nota...")))
+          ((eqv? msg "4") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Tomo nota...")))
+          ((eqv? msg "5") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Tomo nota...")))
+          (else (append log (list "Usuario:" msg ) (list "Chatbot:" "Lo lamento, no logro entenderte, ¿Podrías repetirlo?" "|Respuesta2|")))
+          )
+)
+
+(define (respuesta3 log)
+    (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Se ha confirmado el stock y sus items han sido agregados a su carro."))
+)
+
+(define (respuesta4 msg log)
+     (cond
+          ((or(eqv? msg "Sí") (eqv? msg "Si"))(append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Okey!" "Estos son las marcas/modelos de autos de las homocinéticas que disponemos: 1.-Toyota Rav4, 2.-Renault Duster, 3.-Hyundai Tucson, 4.-Nissan Qashqai, 5.-Nissan Kicks, elija la opción que desea." "|Respuesta2|")))
+          ((or(eqv? msg "Sí, me gustaría comprar algo más") (eqv? msg "Si, me gustaria comprar algo más")) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Okey!" "Estos son las marcas/modelos de autos de las homocinéticas que disponemos: 1.-Toyota Rav4, 2.-Renault Duster, 3.-Hyundai Tucson, 4.-Nissan Qashqai, 5.-Nissan Kicks, elija la opción que desea." "|Respuesta2|")))
+          ((eqv? msg "No, gracias") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Está bien! Se ha confirmado el stock y todos sus items han sido agregados a su carro.")))
+          ((eqv? msg "No") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Está bien! Se ha confirmado el stock y todos sus items han sido agregados a su carro.")))
+          (else (append log (list "Chatbot:" "Lo lamento, no logro entenderte, ¿Podrías repetirlo?" "|Respuesta4|")))
+          )
+)
 
 (define (endDialog chatBot log seed)
      (if (= (adquirirPersonalidad chatBot) 1)
@@ -293,6 +360,7 @@
           (append chatbot (list score) (list f))
      ;else
      (append log (list "Conversación aún en curso."))
+     )
 )
 ;Llamada: (rate cb1 4 (f log))
 
