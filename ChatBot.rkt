@@ -22,6 +22,7 @@
 ;* "cantidadNumerosLista" indica el largo de la lista a generar.
 ;* "numeroActual" valor actual del random, se pasa en cada nivel de recursión de forma actualizada
 ;* "maximoLista" Los números generados van desde 0 hasta maximoLista-1
+;Tipo de Recusión: Recursión de Cola.
 (define obtenerListaRandom
      (lambda (cantidadNumerosLista numeroActual maximoLista)
           (if (= 0 cantidadNumerosLista)
@@ -36,22 +37,31 @@
           )
      )
 )
-
 ;Código de numeroRandom y obtenerListaRandom se han obtenido desde:
-;http://www.udesantiagovirtual.cl/moodle2/pluginfile.php?file=%2F93558%2
-;Fmod_folder%2Fcontent%2F0%2Fvflores%2FrandomScheme.rkt&forcedownload=1
+;http://www.udesantiagovirtual.cl/moodle2/pluginfile.php?file=%2F93558%2Fmod_folder%2Fcontent%2F0%2Fvflores%2FrandomScheme.rkt&forcedownload=1
+;Se han cambiado algunos nombres de las variables para una mejor comprensión, no obstante en escencia son la misma función.
 
+;Nombre función: seed
+;Firma:
+;    Dominio: Números enteros.
+;    Recorrido: Números enteros entre 0 y 1.
+;Descripción: A través de las funciones obtenerListaRandom y numeroRandom, se obtiene un número correspondiente, al aplicar como argumento el tiempo en segundos
+;             se puede obtener un numero pseudoaleatoreo.
 (define (seed valor)
      (car (obtenerListaRandom 1 valor 2))
 )
+;Llammadas:
 ;(seed (date-second (current-date))) = pseudoaleatoreo.
 ;(seed 1) = 0
 ;(seed 2) = 1
 
-;CONSTRUCTOR
-(define log '() )
+(define log '())
 
-;FUNCION DE PERTENENCIA
+;Nombre función: log?
+;Firma:
+;    Dominio: Cualquier tipo de dato.
+;    Recorrido: Booleano.
+;Descripción: Se verifica que el argumento dado sea una lista de strings o una lista vacía.
 (define (log? log)
      (if (list? log)
           ;do
@@ -74,18 +84,17 @@
 ;LLamadas: (separarEvaluaciones (list 1 4 3 5 7 1))
 ;         (adquirirPersonalidad (list 1 4 3 5 7 1))
 
-;Chatbot.
+;Nombre función: log?
+;Firma:
 ;Dominio:
 ;    personalidad: Se ingresa un string que determina la personalidad que tenga el chatbot.
-;    vocabulario: Se ingresa un string que determina el tipo de vocabulario que tenga el chatbot.
-;    evaluaciones: Se ingresa una lista con las evaluaciones anteriores.
-;Tipo 1: Coloquial de vocabulario Alto.
-;Tipo 2: Coloquial de vocabulario Pobre.
-;Tipo 3: Formal de vocabulario Alto.
-;Tipo 4: Formal de vocabulario Pobre.
+;    anteriorListaChatbot: Se ingresa una lista chatbot con el fin de obtener las evaluaciones anteriores.
+;Tipo 0: Informal.
+;Tipo 1: Formal.
+;Recorrido:
 ;Se devulve una lista en donde el primer elemento de esta es el tipo
-;de chatbot, el resto equivalen a las evaluaciones que tenga el chatbot.
-
+;de chatbot, el resto equivalen a la acumulación de las evaluaciones que tenga el chatbot.
+;Descripción: Se crea una lista de enteros en donda el primer entero identifica la personalidad del bot y toma las evaluaciones de algún chat anterior para añadirlas al actual.
 ;CONSTRUCTOR
 (define (chatBot personalidad anteriorListaChatbot)
      (define listaChatbot '())
@@ -97,6 +106,11 @@
 ;Llamada: (chatBot "informal" '())
 
 ;FUNCION DE PERTENENCIA
+;Nombre función: chatBot?
+;Firma:
+;    Dominio: Cualquier tipo de dato.
+;    Recorrido: Booleano.
+;Descripción: Se verifica que el argumento dado sea una lista de enteros o una lista vacía.
 (define (chatBot? chatBot)
      (if (list? chatBot)
           ;do
@@ -124,6 +138,12 @@
 ;Llamada: (chatBot? '(2 3 4 5))
 
 ;SELECTORES
+
+;Nombre función: separarEvaluaciones
+;Firma:
+;    Dominio: Lista de enteros.
+;    Recorrido: Lista de Enteros.
+;Descripción: Se toman todos los elementos de la lista exceptuando al primer elemento.
 (define (separarEvaluaciones listaChatbot)
      (define listaEvaluacion '())
      (if (not (= (length listaChatbot) 0))
@@ -134,6 +154,11 @@
           )
      )
 
+;Nombre función: adquirirPersonalidad
+;Firma:
+;    Dominio: Lista de enteros.
+;    Recorrido: Lista de Enteros con un sólo elemento.
+;Descripción: Se toman el primer elemento de la lista y se añade a una lista vacía.
 (define (adquirirPersonalidad listaChatbot)
      (define personalidadChatbot '())
      (if (not (= (length listaChatbot) 0))
@@ -144,7 +169,12 @@
      )
 )
 
-(define (Hora&Fecha momentoActual listaHora&Fecha)
+;Nombre función: Hora&FechaActual
+;Firma:
+;    Dominio: Current-date, que es una estructura que contiene varios datos sobre la fecha y la hora actual, además se recibe una lista vacía.
+;    Recorrido: Lista con metadatos de hora y fecha.
+;Descripción: Se toman el primer elemento de la lista y se añade a una lista vacía.
+(define (Hora&FechaActual momentoActual listaHora&Fecha)
      (append listaHora&Fecha
      ;Fecha
           (list (string-append (number->string (date-day (current-date))) "/"
@@ -160,65 +190,80 @@
                )
           )
      )
-;Llamada: (Hora&Fecha current-date '())
 
-(define (obtenerElemento posicionObjetivo lista)
-     (cond
-          ((or (< posicionObjetivo 0) (> posicionObjetivo (length lista))))
-          ((> posicionObjetivo 0) (obtenerElemento (- posicionObjetivo 1) (cdr lista)))
-          (else (car lista))
-          )
+(define (Hora&Fecha momentoActual) ;Encapsulación
+     (Hora&FechaActual momentoActual '())
 )
+;Llamada: (Hora&Fecha current-date)
 
+;Nombre función: adquirirUltimo
+;Firma:
+;    Dominio: Lista de strings.
+;    Recorrido: String.
+;Descripción: Se recorre la lista de strings hasta obtener el último string de la lista.
+;Tipo de Recursión: Recursión de cola.
 (define (adquirirUltimo log)
-     (if (< (length log) 1)
+     (if (= (length log) 1)
           ;do
           (car log)
      ;else
-     (adquirirUltimo log)
+     (adquirirUltimo (cdr log))
      )
 )
 ;Llamada: (adquirirUltimo log)
 
+;Nombre función: displayLog
+;Firma:
+;    Dominio: Lista de strings.
+;    Recorrido:
+;Descripción: Se muestra por pantalla la lista dada por argumento.
 (define (displayLog log)
      (display log)
 )
 ;Llamada: (displayLog log)
 
+;Nombre función: begingDialog
+;Firma:
+;    Dominio: Lista de enteros, lista de strings y un número entero.
+;    Recorrido: Lista de strings.
+;Descripción: Se añaden mensajes de bienvenida a la lista de strings.
 (define (begingDialog chatBot log seed)
      (if (= (adquirirPersonalidad chatBot) 1) ;Personalidad: Formal.
           ;do
           (cond
                ((and (> (date-hour (current-date)) 6) (< (date-hour (current-date)) 12) ())
                ;do
-               (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenos Días, ¿Cúal es tu nombre?" "|Nombre|"))
+               (append log (Hora&Fecha current-date) (list "Chatbot:" "Buenos Días, ¿Cúal es tu nombre?" "|Nombre|"))
                )
                ((and (>= (date-hour (current-date)) 12) (< (date-hour (current-date)) 20))
                ;do
-               (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas Tardes, ¿Cúal es tu nombre?" "|Nombre|"))
+               (append log (Hora&Fecha current-date) (list "Chatbot:" "Buenas Tardes, ¿Cúal es tu nombre?" "|Nombre|"))
                )
                ((>= (date-hour (current-date)) 20)
                ;do
-               (append log  (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas Noches, ¿Cúal es tu nombre?" "|Nombre|"))
+               (append log  (Hora&Fecha current-date) (list "Chatbot:" "Buenas Noches, ¿Cúal es tu nombre?" "|Nombre|"))
                )
-               (else (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Buenas, ¿Cómo te llamas?" "|Nombre|")))
+               (else (append log (Hora&Fecha current-date) (list "Chatbot:" "Buenas, ¿Cómo te llamas?" "|Nombre|")))
                )
           ;else Personalidad: Informal.
           (cond
-               ((= seed 0) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Hola!, Cómo te llamai?" "|Nombre|")))
-               ((= seed 1) (append log (Hora&Fecha current-date '()) (list "Chatbot:" "¡Buena!, Cómo te llamas?" "|Nombre|")))
+               ((= seed 0) (append log (Hora&Fecha current-date) (list "Chatbot:" "¡Hola!, Cómo te llamai?" "|Nombre|")))
+               ((= seed 1) (append log (Hora&Fecha current-date) (list "Chatbot:" "¡Buena!, Cómo te llamas?" "|Nombre|")))
                )
           )
      )
 ;Llamada: (define log1 (begingDialog cb1 log (seed 1)))
 
-;Se realiza la venta de homocinéticas de los siguientes vehículos:
-;    Toyota Rav4
-;    Renault Duster
-;    Hyundai Tucson
-;    Nissan Qashqai
-;    Nissan Kicks
+;Nombre función: begingDialog
+;Firma:
+;    Dominio: String, lista de enteros, lista de strings y un número entero.
+;    Recorrido: Lista de strings.
+;Descripción: Se añaden mensajes a la lista de strings según el string dado por el usuario.
 (define (sendMessage msg chatBot log seed)
+     (if (eqv? msg "¿Qué pasó con el stock?")
+          ;do
+          (and (respuesta3 log) (append log (list "|Respuesta4|")))
+     ;else
      (cond
           ((eqv? msg "¿Qué pasó con el stock?")
                (and (respuesta3 log) (append log (list "|Respuesta4|")))
@@ -227,13 +272,13 @@
                (if (= (adquirirPersonalidad chatBot) 1) ;Personalidad: Formal.
                     ;do
                     (cond
-                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Cómo estás?" "|Respuesta1|")))
-                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Qué tal estás?" "|Respuesta1|")))
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¿Cómo estás?" "|Respuesta1|")))
+                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¿Qué tal estás?" "|Respuesta1|")))
                          )
                     ;else Personalidad: Informal.
                     (cond
-                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Cómo estay?" "|Respuesta1|")))
-                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¿Cómo estai" msg "?" "|Respuesta1|")))
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¿Cómo estay?" "|Respuesta1|")))
+                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¿Cómo estai" msg "?" "|Respuesta1|")))
                          )
                     )
                )
@@ -244,27 +289,29 @@
                (and (respuesta2 msg log) (append log (list "Perfecto, ¿Cuántas querrá?" "|Respuesta3|")))
                )
           ((eqv? (adquirirUltimo log) "|Respuesta3|")
-               (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Excelente, déjeme verificar el stock, luego le confirmo." "¿Desea comprar algo más?" "|Respuesta4|"))
+               (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "Excelente, déjeme verificar el stock, luego le confirmo." "¿Desea comprar algo más?" "|Respuesta4|"))
                )
           ((eqv? (adquirirUltimo log) "|Respuesta4|")
                (and (respuesta4 msg log) (append log (list "Perfecto, ¿Cuántas querrá?" "|Respuesta3|")))
                )
           )
+     )
 )
 ;Llamada: (sendMessage msg cb1 log (seed 1))
 
+;Las funciones de respuesta (respuesta1, respuesta2, respuesta3, respuesta4) son funciones sólo para acotar la función sendMessage.
 (define (respuesta1 msg log seed)
      (cond
           ((eqv? msg "bien")
                (if (= (adquirirPersonalidad chatBot) 1) ;Personalidad: Formal.
                     ;do
                     (cond
-                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Oh ¡Perfecto!")))
-                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Que bien!")))
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "Oh ¡Perfecto!")))
+                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¡Que bien!")))
                          )
                     ;else Personalidad: Informal.
                     (cond
-                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Buena!" )))
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¡Buena!" )))
                          ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Buena po!")))
                          )
                     )
@@ -273,13 +320,13 @@
                (if (= (adquirirPersonalidad chatBot) 1) ;Personalidad: Formal.
                     ;do
                     (cond
-                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Oh ¡Que mal, espero poder ayudarte!")))
-                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Espero poder subirte el ánimo cuando lleves lo que buscabas.")))
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "Oh ¡Que mal, espero poder ayudarte!")))
+                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "Espero poder subirte el ánimo cuando lleves lo que buscabas.")))
                          )
                     ;else Personalidad: Informal.
                     (cond
-                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Oh que mala!" )))
-                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡de perro!")))
+                         ((= seed 0) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¡Oh que mala!" )))
+                         ((= seed 1) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¡de perro!")))
                          )
                     )
                )
@@ -289,60 +336,69 @@
 
 (define (respuesta2 msg log)
      (cond
-          ((eqv? msg "1") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Tomo nota...")))
-          ((eqv? msg "2") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Tomo nota...")))
-          ((eqv? msg "3") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Tomo nota...")))
-          ((eqv? msg "4") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Tomo nota...")))
-          ((eqv? msg "5") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "Tomo nota...")))
+          ((eqv? msg "1") (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "Tomo nota...")))
+          ((eqv? msg "2") (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "Tomo nota...")))
+          ((eqv? msg "3") (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "Tomo nota...")))
+          ((eqv? msg "4") (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "Tomo nota...")))
+          ((eqv? msg "5") (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "Tomo nota...")))
           (else (append log (list "Usuario:" msg ) (list "Chatbot:" "Lo lamento, no logro entenderte, ¿Podrías repetirlo?" "|Respuesta2|")))
           )
 )
 
 (define (respuesta3 log)
-    (append log (Hora&Fecha current-date '()) (list "Chatbot:" "Se ha confirmado el stock y sus items han sido agregados a su carro."))
+    (append log (Hora&Fecha current-date) (list "Chatbot:" "Se ha confirmado el stock y sus items han sido agregados a su carro."))
 )
 
 (define (respuesta4 msg log)
      (cond
-          ((or(eqv? msg "Sí") (eqv? msg "Si"))(append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Okey!" "Estos son las marcas/modelos de autos de las homocinéticas que disponemos: 1.-Toyota Rav4, 2.-Renault Duster, 3.-Hyundai Tucson, 4.-Nissan Qashqai, 5.-Nissan Kicks, elija la opción que desea." "|Respuesta2|")))
-          ((or(eqv? msg "Sí, me gustaría comprar algo más") (eqv? msg "Si, me gustaria comprar algo más")) (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Okey!" "Estos son las marcas/modelos de autos de las homocinéticas que disponemos: 1.-Toyota Rav4, 2.-Renault Duster, 3.-Hyundai Tucson, 4.-Nissan Qashqai, 5.-Nissan Kicks, elija la opción que desea." "|Respuesta2|")))
-          ((eqv? msg "No, gracias") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Está bien! Se ha confirmado el stock y todos sus items han sido agregados a su carro.")))
-          ((eqv? msg "No") (append log (list "Usuario:" msg ) (Hora&Fecha current-date '()) (list "Chatbot:" "¡Está bien! Se ha confirmado el stock y todos sus items han sido agregados a su carro.")))
+          ((or(eqv? msg "Sí") (eqv? msg "Si"))(append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¡Okey!" "Estos son las marcas/modelos de autos de las homocinéticas que disponemos: 1.-Toyota Rav4, 2.-Renault Duster, 3.-Hyundai Tucson, 4.-Nissan Qashqai, 5.-Nissan Kicks, elija la opción que desea." "|Respuesta2|")))
+          ((or(eqv? msg "Sí, me gustaría comprar algo más") (eqv? msg "Si, me gustaria comprar algo más")) (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¡Okey!" "Estos son las marcas/modelos de autos de las homocinéticas que disponemos: 1.-Toyota Rav4, 2.-Renault Duster, 3.-Hyundai Tucson, 4.-Nissan Qashqai, 5.-Nissan Kicks, elija la opción que desea." "|Respuesta2|")))
+          ((eqv? msg "No, gracias") (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¡Está bien! Se ha confirmado el stock y todos sus items han sido agregados a su carro.")))
+          ((eqv? msg "No") (append log (list "Usuario:" msg ) (Hora&Fecha current-date) (list "Chatbot:" "¡Está bien! Se ha confirmado el stock y todos sus items han sido agregados a su carro.")))
           (else (append log (list "Chatbot:" "Lo lamento, no logro entenderte, ¿Podrías repetirlo?" "|Respuesta4|")))
           )
 )
 
+;Nombre función: endDialog
+;Firma:
+;    Dominio: Lista de enteros, lista de strings y un número entero.
+;    Recorrido: Lista de strings.
+;Descripción: Se añaden mensajes de despedida a la lista de strings.
 (define (endDialog chatBot log seed)
      (if (= (adquirirPersonalidad chatBot) 1)
           ;do
           (cond
                ((and (> (date-hour (current-date)) 6) (< (date-hour (current-date)) 12))
                ;do
-               (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Espero haberte sido de utilidad, que tengas un buen día" (adquirirNombre log)",¡Adiós!. ¡No olvides puntuar la aplicación!" "|Fin conversación|"))
+               (append log (Hora&Fecha current-date) (list "Chatbot: " "Espero haberte sido de utilidad, que tengas un buen día, ¡Adiós!. ¡No olvides puntuar la aplicación!" "|Fin conversación|"))
                )
                ((and (>= (date-hour (current-date)) 12) (< (date-hour (current-date)) 20))
                ;do
-               (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Espero haberte sido de utilidad, que tengas una buena tarde" (adquirirNombre log)",¡Adiós!. ¡No olvides puntuar la aplicación!" "|Fin conversación|"))
+               (append log (Hora&Fecha current-date) (list "Chatbot: " "Espero haberte sido de utilidad, que tengas una buena tarde, ¡Adiós!. ¡No olvides puntuar la aplicación!" "|Fin conversación|"))
                )
                ((>= (date-hour (current-date)) 20)
                ;do
-               (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Espero haberte sido de utilidad, que tengas un buena noche "(adquirirNombre log)",¡Adiós!. ¡No olvides puntuar la aplicación!" "|Fin conversación|"))
+               (append log (Hora&Fecha current-date) (list "Chatbot: " "Espero haberte sido de utilidad, que tengas un buena noche, ¡Adiós!. ¡No olvides puntuar la aplicación!" "|Fin conversación|"))
                )
-               (else (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Espero haberte sido de utilidad " (adquirirNombre log)", ¡Hasta luego!. ¡No olvides puntuar la aplicación!" "|Fin conversación|"))
+               (else (append log (Hora&Fecha current-date) (list "Chatbot: " "Espero haberte sido de utilidad, ¡Hasta luego!. ¡No olvides puntuar la aplicación!" "|Fin conversación|"))
                      )
                )
           ;else
           (cond
-               ((= seed 0) (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Chao" (adquirirNombre log)", ¡Nos vimoh!. ¡Acuérdate de puntuar la aplicación!" "|Fin conversación|")))
-               ((= seed 1) (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Espero haberte servido" (adquirirNombre log)", ¡Adiós!. ¡Acuérdate de puntuar la aplicación!" "|Fin conversación|")))
-               ((= seed 2) (append log (Hora&Fecha current-date '()) (list "Chatbot: " "Dale compa, ¡Nos vemos" (adquirirNombre log)"!. ¡Acuérdate de puntuar la aplicación!" "|Fin conversación|")))
+               ((= seed 0) (append log (Hora&Fecha current-date) (list "Chatbot: " "Chao, ¡Nos vimoh!. ¡Acuérdate de puntuar la aplicación!" "|Fin conversación|")))
+               ((= seed 1) (append log (Hora&Fecha current-date) (list "Chatbot: " "Espero haberte servido, ¡Adiós!. ¡Acuérdate de puntuar la aplicación!" "|Fin conversación|")))
+               ((= seed 2) (append log (Hora&Fecha current-date) (list "Chatbot: " "Dale compa, ¡Nos vemos!. ¡Acuérdate de puntuar la aplicación!" "|Fin conversación|")))
                )
           )
 )
 ;Llamada: (define log1 (endDialog cb1 log (seed 1)))
 
-
-(define (f log)
+;Nombre función: f
+;Firma:
+;    Dominio: Lista de strings.
+;    Recorrido: Entero.
+;Descripción: Se busca la cantidad de veces que se repite la frase, lo cual determina el número a retornar.
+(define (f log) ;Métrica
      (cond
           ((> (buscadorRepeticiones log "Lo lamento, no logro entenderte, ¿Podrías repetirlo?" 0) 7) 1)
           ((= (buscadorRepeticiones log "Lo lamento, no logro entenderte, ¿Podrías repetirlo?" 0) 5) 2)
@@ -354,6 +410,11 @@
 )
 ;Llamada: (f log)
 
+;Nombre función: rate
+;Firma:
+;    Dominio: Lista de enteros, dos números enteros y lista de strings.
+;    Recorrido: Lista de enteros.
+;Descripción: Se verifica que la conversación ya ha concluido para luego añadir las evaluaciones a la lista de enteros del chatBot.
 (define (rate chatbot score f log)
      (if (eqv? (adquirirUltimo log) "|Fin conversación|")
           ;do
@@ -364,6 +425,12 @@
 )
 ;Llamada: (rate cb1 4 (f log))
 
+;Nombre función: buscadorRepeticiones
+;Firma:
+;    Dominio: Lista de strings, string.
+;    Recorrido: Entero.
+;Descripción: Se recorre la lista de strings contando las coincidencias del string obtenido como argumento.
+;Tipo de Recursión: Recursión de cola.
 (define (procesoRecursivoBR log stringObjetivo numeroCreciente)
      (if (not (= (member stringObjetivo log) 0))
           ;do
@@ -373,12 +440,7 @@
      )
 )
 
-(define (buscadorRepeticiones log stringObjetivo) ; Encapsulación.
+(define (buscadorRepeticiones log stringObjetivo) ;Encapsulación.
      (procesoRecursivoBR log stringObjetivo 0)
 )
 ;Llamada: (buscadorRepeticiones log "" 0)
-
-(define (adquirirNombre log)
-     (car (cdr (member "|Nombre|" log)))
-)
-;Llamada: (adquirirNombre log)
